@@ -1,2 +1,2 @@
 # nuxt-cnode
-基于ssr的简化版cnode
+开发中
