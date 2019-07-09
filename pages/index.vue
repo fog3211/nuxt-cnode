@@ -1,98 +1,151 @@
 <template>
-<div>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-md-8">
-                <div class="card fluid topic" v-for="topic in list" :key="topic.id" >
-                    <div class="section">
-                        <h3><nuxt-link :to="{name: 'topic-id', params: {id: topic.id}}" class="topic--title">{{topic.title}}</nuxt-link></h3>
-                        <p class="topic--info">
-                            <mark v-if="topic.top" class="tertiary">精华</mark>
-                            <mark v-else>{{tabsObj[topic.tab]}}</mark>
-                            <span class="avatar">
-                                <img :src="topic.author.avatar_url" alt="">
-                            </span>
-                            <span class="username">
-                                {{topic.author.loginname}}
-                            </span>
-                        </p>
-                    </div>
-                </div>
-            </div>
+  <div class="container">
+    <ul class="list">
+      <li class="topic" v-for="item in list" :key="item.id">
+        <div class="section">
+          <h3>
+            <nuxt-link
+              :to="{ name: 'topic-id', params: { id: item.id } }"
+              class="title"
+              >{{ item.title }}</nuxt-link
+            >
+          </h3>
+          <div class="info">
+            <span v-if="item.top" class="label checked">置顶</span>
+            <span v-else class="label unchecked">{{ tabsObj[item.tab] }}</span>
+            <img :src="item.author.avatar_url" alt="avatar" class="avatar" />
+            <span class="name">
+              {{ item.author.loginname }}
+            </span>
+            <span class="time">
+              {{ formatTime(item.create_at) }}
+            </span>
+          </div>
         </div>
-    </div>
-</div>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
-// import AppLogo from '~/components/AppLogo.vue'
-// import axios from '~/plugins/axios'
+import axios from "axios";
 
-
-const tabs = [{
-    name: '精华',
-    path: 'good'
-}, {
-    name: '问答',
-    path: 'ask'
-}, {
-    name: '招聘',
-    path: 'job'
-}, {
-    name: '分享',
-    path: 'share'
-}]
-let tabsObj = {} 
+const tabs = [
+  {
+    name: "精华",
+    path: "good"
+  },
+  {
+    name: "问答",
+    path: "ask"
+  },
+  {
+    name: "招聘",
+    path: "job"
+  },
+  {
+    name: "分享",
+    path: "share"
+  }
+];
+let tabsObj = {};
 tabs.map(tab => {
-    tabsObj[tab.path] = tab.name
-})
+  tabsObj[tab.path] = tab.name;
+});
 export default {
-    // layout: 'mylayout',
-    // components: {
-    //     AppLogo
-    // },
-    data: () => ({
-        tabs,
-        tabsObj
-    }),
-    asyncData({app, query}) {
-        console.log(query)
-        return app.$axios.$get(`topics?tab=${query.tab || ''}`).then(res => {
-            // console.log(res)
-            // console.log(JSON.parse(res))
-            return {list: res.data}
-        })
+  asyncData({ query }) {
+    // console.log("query", query);
+    return axios
+      .get(`https://cnodejs.org/api/v1/topics?tab=${query.tab || ""}`)
+      .then(res => {
+        console.log(res.data.data);
+        return { list: res.data.data };
+      });
+  },
+  data() {
+    return {
+      tabs,
+      tabsObj
+    };
+  },
+  methods: {
+    getData(tab) {
+      axios
+        .get(`https://cnodejs.org/api/v1/topics?tab=${tab || ""}`)
+        .then(res => {
+          console.log(res.data.data);
+          this.list = res.data.data;
+        });
     },
-    methods: {
-        getData() {
-            this.$axios.$get(`topics?tab=${this.$route.query.tab || ''}`).then(res => {
-                // console.log(res)
-                // console.log(JSON.parse(res))
-                // return {list: res.data}
-                this.list = res.data
-            })
-        }
-    },
-    head() {
-        return {
-            title: '首页' + (this.$route.query.tab ? `- ${this.tabsObj[this.$route.query.tab]}` : ''),
-            meta: [{
-                hid: 'description',
-                name: 'description',
-                content: 'CNode：Node.js专业中文社区'
-            }]
-        }
-    },
-    watch: {
-        '$route': function() {
-            console.log('$route has changed.')
-            this.getData()
-        }
+    formatTime(t) {
+      return t.slice(0, 10);
     }
-}
+  },
+  watch: {
+    $route() {
+      this.getData(this.$route.query.tab || "");
+    }
+  }
+};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.container {
+  width: 90%;
+  min-width: 320px;
+  margin: 20px auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: rgb(248, 245, 245);
 
+  .topic {
+    margin-top: 5px;
+    border-bottom: 1px solid #ccc;
+    // height: 70px;
+    &:last-child {
+      border-bottom: none;
+    }
+    .title {
+      color: #000;
+      overflow: hidden;
+    }
+    .info {
+      display: block;
+      margin-top: 8px;
+      img {
+        vertical-align: middle;
+      }
+      .label {
+        font-size: 14px;
+        padding: 2px 4px;
+        color: #999;
+      }
+      .checked {
+        background-color: #80bd01;
+        color: #fff;
+      }
+      .unchecked {
+        background-color: #e5e5e5;
+      }
 
+      .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-size: cover;
+        border: 1px solid #ccc;
+        margin: 0 10px;
+      }
+
+      .name {
+        font-style: italic;
+        color: rgb(161, 155, 155);
+      }
+      .time {
+        float: right;
+        margin-right: 10px;
+      }
+    }
+  }
+}
 </style>

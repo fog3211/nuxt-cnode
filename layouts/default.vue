@@ -1,72 +1,76 @@
 <template>
-<div>
-    <header>
-        <a href="#" class="logo"><img src="https://o4j806krb.qnssl.com/public/images/cnodejs_light.svg" alt=""></a>
-        <!-- <button>全部</button> -->
-        <a href="/" class="button">全部</a>
-        <span>|</span>
-        <!-- <a v-for="nav in tabs" :key="nav.path" :href="'?tab='+nav.path" role="button">{{nav.name}}</a> -->
-        <nuxt-link v-for="nav in tabs" :key="nav.path" :to="'/?tab='+nav.path" role="button">{{nav.name}}</nuxt-link>
-        <!-- <button>About</button> -->
-        <!-- <a href="#" role="button">Contact</a> -->
+  <div>
+    <header class="header">
+      <a href="/" class="nav">全部</a>
+      <nuxt-link
+        v-for="item in tabs"
+        :key="item.path"
+        :to="'/?tab=' + item.path"
+        class="nav"
+        >{{ item.name }}</nuxt-link
+      >
     </header>
-    <nuxt/>
-    <footer>
-        <p>&copy; 2018-2018 LeungJZ | Nuxt Demo</p>
+    <nuxt />
+    <footer class="footer">
+      <p>Copyright © 2019 By Fog3211</p>
     </footer>
-</div>
+  </div>
 </template>
 
 <script>
-const tabs = [{
-    name: '精华',
-    path: 'good'
-}, {
-    name: '问答',
-    path: 'ask'
-}, {
-    name: '招聘',
-    path: 'job'
-}, {
-    name: '分享',
-    path: 'share'
-}]
-
 export default {
-    data: () => ({
-        tabs
-    })
-}
+  data() {
+    return {
+      tabs: [
+        {
+          name: "精华",
+          path: "good"
+        },
+        {
+          name: "问答",
+          path: "ask"
+        },
+        {
+          name: "招聘",
+          path: "job"
+        },
+        {
+          name: "分享",
+          path: "share"
+        }
+      ]
+    };
+  }
+};
 </script>
 
 <style lang="scss">
-html {
-    font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-        'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 16px;
-    word-spacing: 1px;
-    -ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
 }
-
-.container {
-    max-width: 1200px;
-    margin: 10px auto;
-}
-
-*,
-*:before,
-*:after {
-    box-sizing: border-box;
-    margin: 0;
-}
-
-.logo {
-    img {
-        width: 100px;
+.header {
+  background-color: #444;
+  height: 50px;
+  line-height: 50px;
+  .nav {
+    padding: 10px 15px;
+    color: aliceblue;
+    &:hover {
+      background-color: #555;
     }
+    &:active {
+      color: rgb(213, 219, 224);
+    }
+  }
+}
+.footer {
+  text-align: center;
+  margin: 20px auto;
+  color: rgb(46, 43, 43);
+  font-style: italic;
+  font-size: 14px;
 }
 </style>
