@@ -2,10 +2,6 @@
 
 > nux搭建的简化版cnode，只做了查看帖子内容的部分
 
-## 预览
-
-[预览](http://fog3211.com/nuxt-cnode/dist/index.html)  
-
 ## 部署
 
 ``` bash
