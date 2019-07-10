@@ -1,21 +1,17 @@
 # nuxt-cnode
 
-> nux搭建的简化版cnode，只做了查看帖子内容的部分
+> My supreme Nuxt.js project
 
-## 预览
-
-[预览地址](http://fog3211.com/nuxt-cnode/dist/index.html)  
-
-## 部署
+## Build Setup
 
 ``` bash
-# 安装依赖
+# install dependencies
 $ yarn
 
-# 启动服务
+# serve with hot reload at localhost:3000
 $ yarn dev
 
-# 打包部署
+# build for production and launch server
 $ yarn build
 $ yarn start
 
@@ -23,3 +19,4 @@ $ yarn start
 $ yarn generate
 ```
 
+For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
