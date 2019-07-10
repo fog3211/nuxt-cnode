@@ -12,7 +12,9 @@
           </h3>
           <div class="info">
             <span v-if="item.top" class="label checked">置顶</span>
-            <span v-else class="label unchecked">{{ tabsObj[item.tab] }}</span>
+            <span v-else class="label unchecked">{{
+              tabsObj[item.tab] || "其他"
+            }}</span>
             <img :src="item.author.avatar_url" alt="avatar" class="avatar" />
             <span class="name">
               {{ item.author.loginname }}
@@ -58,7 +60,7 @@ export default {
     return axios
       .get(`https://cnodejs.org/api/v1/topics?tab=${query.tab || ""}`)
       .then(res => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         return { list: res.data.data };
       });
   },
@@ -73,7 +75,7 @@ export default {
       axios
         .get(`https://cnodejs.org/api/v1/topics?tab=${tab || ""}`)
         .then(res => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           this.list = res.data.data;
         });
     },
@@ -85,6 +87,23 @@ export default {
     $route() {
       this.getData(this.$route.query.tab || "");
     }
+  },
+  // seo优化
+  head() {
+    return {
+      title:
+        "首页" +
+        (this.$route.query.tab
+          ? `- ${this.tabsObj[this.$route.query.tab]}`
+          : ""),
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "CNode：Node.js专业中文社区"
+        }
+      ]
+    };
   }
 };
 </script>
@@ -101,7 +120,6 @@ export default {
   .topic {
     margin-top: 5px;
     border-bottom: 1px solid #ccc;
-    // height: 70px;
     &:last-child {
       border-bottom: none;
     }

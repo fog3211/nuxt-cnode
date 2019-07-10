@@ -1,6 +1,4 @@
-# nuxt-cnode 开发中
-
-<<<<<<< HEAD
+# nuxt-cnode
 
 > My supreme Nuxt.js project
 
